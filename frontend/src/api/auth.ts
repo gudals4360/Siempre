@@ -43,4 +43,8 @@ export const authApi = {
   signup: (input: { nickname: string; agreeTerms: boolean; marketing?: boolean }) =>
     call<{ user: User }>('/api/auth/signup', { body: input, authed: true }),
   me: () => call<{ user: User; subscribed: boolean }>('/api/auth/me', { authed: true }),
+  /** 어떤 로그인 방법을 보여 줄지 (시연 모드가 켜졌는지) */
+  config: () => call<{ demoLogin: boolean; firebase: boolean }>('/api/auth/config'),
+  /** 시연 모드: Firebase 없이 관리자 계정으로 로그인 (백엔드 DEMO_LOGIN=1일 때만) */
+  demoLogin: () => call<{ token: string; user: User }>('/api/auth/demo-login', { body: {} }),
 };

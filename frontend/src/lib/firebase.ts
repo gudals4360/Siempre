@@ -3,6 +3,7 @@
 
 import { initializeApp } from 'firebase/app';
 import { browserLocalPersistence, getAuth, setPersistence, type Auth } from 'firebase/auth';
+import { getDemoToken } from './demo';
 
 const env = import.meta.env;
 const config = {
@@ -18,12 +19,13 @@ const config = {
 export const firebaseReady = Boolean(config.apiKey && config.authDomain && config.projectId && config.appId);
 
 export const auth: Auth | null = firebaseReady ? getAuth(initializeApp(config)) : null;
-// 브라우저를 닫았다 열어도 로그인 유지 (PRD 5-0 "로그인 상태가 유지된다")
+// 브라우저를 닫았다 열어도 로그인 유지 (PRD 7-0 "로그인 상태가 유지된다")
 if (auth) void setPersistence(auth, browserLocalPersistence);
 
-/** 지금 로그인한 Firebase 계정의 ID 토큰. 백엔드 요청 Authorization 헤더에 붙인다. */
+/** 백엔드 요청 Authorization 헤더에 붙일 토큰: Firebase 계정의 ID 토큰, 없으면 시연 모드 토큰 */
 export async function currentIdToken(): Promise<string | null> {
-  return auth?.currentUser ? auth.currentUser.getIdToken() : null;
+  if (auth?.currentUser) return auth.currentUser.getIdToken();
+  return getDemoToken();
 }
 
 /** Firebase 오류 코드 → 사용자에게 보여 줄 문장 */

@@ -1,5 +1,5 @@
 // 회원가입·로그인에서 바뀔 수 있는 값과 문구.
-// 규칙은 backend/auth/config.js와 같은 값을 유지한다 (근거: backend/auth/README.md, PRD 5-0).
+// 규칙은 backend/auth/config.js와 같은 값을 유지한다 (근거: backend/auth/README.md, PRD 7-0).
 
 export const SIGNUP_STEPS = [
   { id: 'account', path: '/signup', label: '계정 정보' },

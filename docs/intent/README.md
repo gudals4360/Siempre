@@ -5,7 +5,8 @@
 | 폴더 | 날짜 | 내용 | 상태 |
 | --- | --- | --- | --- |
 | [20261109-signup-flow](20261109-signup-flow/intent.md) | 2026-11-09 | 회원가입·로그인 화면(`frontend/`)과 auth API(`backend/auth`) | PR #9 병합 |
-| [20261109-prototype-auth](20261109-prototype-auth/intent.md) | 2026-11-09 | 로그인 ↔ 권희수 님 서비스 화면 연결 | 로컬 구현·검증 / PR 미승인 |
+| [20261109-prototype-auth](20261109-prototype-auth/intent.md) | 2026-11-09 | 로그인 ↔ 권희수 님 서비스 화면 연결 | PR #13 병합 |
+| [20261109-guest-subscribe-first](20261109-guest-subscribe-first/intent.md) | 2026-11-09 | MVP: 구독 화면부터 보여 주고 시작할 때 로그인 + 시연용 관리자 계정(Firebase 없이) | 로컬 구현·검증 / PR 미승인 |
 
 ## 작성 규칙
 

@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, type User as FirebaseUser } from 'firebase/auth';
 import { ApiError, authApi, type User } from '../api/auth';
+import { clearDemoToken, getDemoToken, setDemoToken } from '../lib/demo';
 import { auth, firebaseReady } from '../lib/firebase';
 
 type ProfileResult = 'ok' | 'profile_missing' | 'none';
@@ -16,6 +17,10 @@ interface AuthState {
   subscribed: boolean;
   /** 서버와 연결이 안 될 때 등 */
   problem: string | null;
+  /** 백엔드 시연 모드(DEMO_LOGIN=1)가 켜져 있어 "시연용 관리자로 로그인"을 보여 줄지 */
+  demoAvailable: boolean;
+  /** 시연 모드: Firebase 없이 관리자 계정으로 로그인 */
+  demoLogin: () => Promise<ProfileResult>;
   login: (email: string, password: string) => Promise<ProfileResult>;
   /** Firebase 계정을 만든다 (만들면 바로 로그인 상태). 지울 때 쓰도록 계정을 돌려준다. */
   createAccount: (email: string, password: string) => Promise<FirebaseUser>;
@@ -26,14 +31,15 @@ interface AuthState {
 const Ctx = createContext<AuthState | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null | undefined>(firebaseReady ? undefined : null);
+  const [user, setUser] = useState<User | null | undefined>(firebaseReady || getDemoToken() ? undefined : null);
+  const [demoAvailable, setDemoAvailable] = useState(false);
   const [pendingEmail, setPendingEmail] = useState<string | null>(null);
   const [subscribed, setSubscribed] = useState(false);
   const [problem, setProblem] = useState<string | null>(null);
 
   const refresh = useCallback(async (): Promise<ProfileResult> => {
-    const fu = auth?.currentUser;
-    if (!fu) {
+    const fu = auth?.currentUser ?? null;
+    if (!fu && !getDemoToken()) {
       setUser(null); setPendingEmail(null); setSubscribed(false);
       return 'none';
     }
@@ -43,7 +49,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return 'ok';
     } catch (e) {
       setUser(null); setSubscribed(false);
-      if (e instanceof ApiError && e.code === 'profile_missing') {
+      if (!fu && e instanceof ApiError && e.status === 401) {
+        clearDemoToken(); // 시연 토큰이 만료됐거나 백엔드를 다시 켰다
+        setPendingEmail(null); setProblem(null);
+        return 'none';
+      }
+      if (fu && e instanceof ApiError && e.code === 'profile_missing') {
         setPendingEmail(fu.email);
         setProblem(null);
         return 'profile_missing';
@@ -55,8 +66,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (!auth) return;
+    authApi.config().then((c) => setDemoAvailable(c.demoLogin)).catch(() => setDemoAvailable(false));
+    if (!auth) {
+      if (getDemoToken()) void refresh();
+      return;
+    }
     return onAuthStateChanged(auth, () => { void refresh(); });
+  }, [refresh]);
+
+  const demoLogin = useCallback(async () => {
+    const r = await authApi.demoLogin();
+    setDemoToken(r.token);
+    return refresh();
   }, [refresh]);
 
   const login = useCallback(async (email: string, password: string) => {
@@ -71,13 +92,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const logout = useCallback(async () => {
-    if (auth) await signOut(auth);
+    clearDemoToken();
+    if (auth?.currentUser) await signOut(auth);
     setUser(null); setPendingEmail(null); setSubscribed(false);
   }, []);
 
   const value = useMemo(
-    () => ({ firebaseReady, user, pendingEmail, subscribed, problem, login, createAccount, refresh, logout }),
-    [user, pendingEmail, subscribed, problem, login, createAccount, refresh, logout],
+    () => ({ firebaseReady, user, pendingEmail, subscribed, problem, demoAvailable, demoLogin, login, createAccount, refresh, logout }),
+    [user, pendingEmail, subscribed, problem, demoAvailable, demoLogin, login, createAccount, refresh, logout],
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

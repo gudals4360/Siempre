@@ -1,4 +1,4 @@
-// 회원가입·로그인 규칙 (auth/README.md "규칙" 표, PRD 5-0). 바뀌면 이 파일과 README만 고친다.
+// 회원가입·로그인 규칙 (auth/README.md "규칙" 표, PRD 7-0). 바뀌면 이 파일과 README만 고친다.
 // 프런트의 frontend/src/config/auth.ts와 같은 값을 유지한다.
 // 비밀번호 확인·로그인 상태 유지는 Firebase Authentication이 맡는다.
 

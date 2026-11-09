@@ -21,10 +21,22 @@ PRD 7-0. 이메일과 비밀번호로 가입하고 로그인해요. 소셜 로�
 | POST | `/api/auth/check-nickname` | 필요 없음 | `{ nickname }` | `{ available: true }` 또는 `{ available: false, reason: "invalid" \| "reserved" \| "taken" }` |
 | POST | `/api/auth/signup` | **필요** | `{ nickname, agreeTerms, marketing? }` | 201 `{ user }` |
 | GET | `/api/auth/me` | **필요** | — | `{ user, subscribed }` |
+| GET | `/api/auth/config` | 필요 없음 | — | `{ demoLogin, firebase }` (화면이 시연 버튼을 보여 줄지 정함) |
+| POST | `/api/auth/demo-login` | 필요 없음 | — | `{ token, user }` — **시연 모드(`DEMO_LOGIN=1`)에서만**, 꺼져 있으면 404 |
 
 - `user` = `{ id, email, nickname }`. 이메일은 화면이 보낸 값이 아니라 **토큰 안의 이메일**을 써요.
 - 로그인·로그아웃은 화면에서 Firebase로 해요 (`signInWithEmailAndPassword`, `signOut`). 백엔드 주소는 없어요.
 - `me`가 404 `profile_missing`이면 Firebase 계정은 있는데 Siempre 가입(닉네임·약관)을 마치지 않은 상태예요. 화면은 가입 화면에서 이어서 받게 해요.
+
+## 시연 모드 (MVP 발표용, 2026-11-09)
+
+Firebase 설정 없이 발표할 수 있게 **관리자 계정 하나**로 들어가는 모드예요.
+
+- `backend/.env`에 `DEMO_LOGIN=1`이면 켜져요. 로그인 화면에 "시연용 관리자로 로그인" 버튼이 생기고, 비밀번호 없이 그 버튼으로만 들어가요.
+- 계정: 닉네임 `관리자`, 이메일 `admin@siempre.demo` (예약 닉네임이라 일반 가입으로는 만들 수 없음). 처음 로그인할 때 `users`에 한 줄 생겨요.
+- 토큰: `demo.`로 시작, 서버 메모리의 무작위 키로 서명, 12시간 유효. **백엔드를 다시 켜면 무효**가 돼서 다시 버튼을 눌러야 해요.
+- Firebase 설정(`FIREBASE_PROJECT_ID`)이 없어도 시연 토큰은 통과해요. Firebase 토큰과 함께 써도 돼요.
+- ⚠️ 비밀번호 없이 들어가는 계정이라 **운영 배포에서는 절대 켜지 않아요.** 켜면 서버 시작 로그에 경고가 떠요.
 
 ## 규칙
 
@@ -47,8 +59,9 @@ PRD 7-0. 이메일과 비밀번호로 가입하고 로그인해요. 소셜 로�
 | `schema.js` | `users`(firebase_uid·email·nickname·marketing·약관 동의 시각), `withdrawn_members` + 시연용 탈퇴 기록(`rejoin@siempre.test`, `SEED_DEMO=0`이면 안 넣음) |
 | `validate.js` | 입력 검증 (저장할 형태로 정리) |
 | `service.js` | 이메일·닉네임 확인, 회원 정보 만들기 |
-| `routes.js` | API 4개 등록, `currentUser`·`requireUser` 제공 |
-| `test/auth.test.js` | 테스트용 RSA 키로 토큰을 만들어 서명 확인까지 시험 (`cd backend && npm test`) |
+| `routes.js` | API 등록, `currentUser`·`requireUser` 제공 |
+| `demo.js` | 시연 모드 관리자 계정·토큰 |
+| `test/auth.test.js`, `test/demo.test.js` | 테스트용 RSA 키로 토큰을 만들어 서명 확인까지 시험, 시연 모드 켜짐/꺼짐·위조·만료 (`cd backend && npm test`) |
 
 환경 변수: `FIREBASE_PROJECT_ID` (웹 설정의 `projectId`). 없으면 토큰이 필요한 API는 503 `auth_not_configured`.
 
@@ -64,7 +77,7 @@ PRD 7-0. 이메일과 비밀번호로 가입하고 로그인해요. 소셜 로�
 
 ## 오류 코드
 
-`invalid_email`, `invalid_nickname`, `exists`, `nickname_taken`, `terms_required`, `login_required`, `profile_missing`, `rate_limited`, `auth_not_configured` (+ 공통 `invalid_body`)
+`invalid_email`, `invalid_nickname`, `exists`, `nickname_taken`, `terms_required`, `login_required`, `profile_missing`, `rate_limited`, `auth_not_configured`, `not_found`(시연 모드 꺼짐) (+ 공통 `invalid_body`)
 
 ## 끝났는지 확인
 

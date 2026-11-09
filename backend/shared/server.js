@@ -72,6 +72,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   server.listen(port, () => {
     console.log(`Siempre 백엔드: http://localhost:${port}`);
     console.log(`라우트: ${router.list().join(', ')}`);
+    if (process.env.DEMO_LOGIN === '1') console.warn('⚠️ 시연 모드(DEMO_LOGIN=1): 로그인 화면에 "시연용 관리자로 로그인" 버튼이 켜져요. 운영 배포에서는 끄세요.');
     if (!process.env.FIREBASE_PROJECT_ID) console.warn('FIREBASE_PROJECT_ID가 없어 로그인이 필요한 API는 503으로 답해요. backend/.env에 넣어 주세요.');
   });
 }

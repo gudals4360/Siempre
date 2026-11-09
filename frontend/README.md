@@ -57,10 +57,15 @@ npm run build             # 타입 검사 + 배포용 빌드
 | `/signup/terms` | 2단계: 약관 동의(필수 4개 + 선택 소식 받기) → Firebase 계정 만들기 + Siempre 회원 정보 저장 (바로 로그인 상태) |
 | `/signup/done` | 3단계: 가입 완료 |
 | `/login` | Firebase 로그인 (`?next=`로 원래 가려던 화면으로 돌아감). 가입을 마치지 않은 계정이면 `/signup`에서 이어서 |
-| `/` | 로그인했으면 서비스 화면으로, 안 했으면 `/login`으로 |
-| `/siempre-figma-prototype.html` | 서비스 화면 (권희수 님: 구독·대화·크레딧). 로그인해야 열려요 |
+| `/` | 누구나 서비스 화면(구독 선택)으로. `npm run dev` 후 처음 여는 화면 |
+| `/siempre-figma-prototype.html` | 서비스 화면 (권희수 님: 구독·대화·크레딧). 둘러보기는 누구나, **시작할 때 로그인** |
 
 - 로그인이 필요한 React 화면은 `<RequireAuth>`로 감싸면 로그인 안 한 사용자를 `/login`으로 보내요 (PRD 7-0).
+- **MVP 흐름 (2026-11-09):** 처음 온 사람도 구독 화면부터 봐요. "이 구성으로 시작하기"·"결제 없이 무료로 시작하기"를 누르거나 대화·크레딧으로 가려고 하면
+  고른 구성(담은 AI 단계·결제 주기)을 이 탭의 sessionStorage에 잠깐 저장하고 로그인 화면으로 보내요. 로그인(또는 가입)하고 돌아오면 구성을 되살리고 누르려던 동작을 이어서 해요.
+  상단바는 로그인 전 "로그인 / 회원가입", 로그인 후 닉네임·로그아웃이에요. 로그아웃해도 구독 화면에 남아요.
+- **시연 모드 (MVP 발표):** `backend/.env`에 `DEMO_LOGIN=1`을 넣고 백엔드를 켜면, Firebase 설정(`frontend/.env.local`)이 없어도 로그인 화면의 **"시연용 관리자로 로그인"** 버튼으로 들어갈 수 있어요.
+  시연 토큰은 브라우저 localStorage에 있어서 새로고침해도 유지되고, 로그아웃하거나 백엔드를 다시 켜면 풀려요. 운영 배포에서는 켜지 않아요.
 - **서비스 화면과 로그인 연결:** `siempre-figma-prototype.html`의 `<head>`에 `src/bridge/prototypeAuth.ts`를 부르는 `<script>` 한 줄만 넣었어요. 이 스크립트가
   로그인 확인(안 했으면 `/login?next=…`, 가입을 안 끝냈으면 `/signup`), 상단바 "도윤 님" 자리에 실제 닉네임, 로그아웃 버튼을 맡아요. 그 HTML의 다른 부분은 건드리지 않아요.
 - 빌드하면 페이지 두 개가 나와요 (`vite.config.ts`의 `build.rollupOptions.input`): `index.html`(회원가입·로그인), `siempre-figma-prototype.html`(서비스 화면).

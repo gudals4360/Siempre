@@ -15,7 +15,7 @@ type NickUi = { status: 'idle' | 'invalid' | 'checking' | 'ok' | 'taken'; reason
 /** 1단계: 계정 정보 (이메일·비밀번호·닉네임) */
 export function SignupAccountPage() {
   const navigate = useNavigate();
-  const { user, pendingEmail, firebaseReady } = useAuth();
+  const { user, pendingEmail, firebaseReady, demoAvailable } = useAuth();
   const { draft, setDraft } = useSignup();
   // Firebase 계정은 있는데 Siempre 가입을 마치지 않은 경우: 이메일·비밀번호는 건너뛰고 닉네임·약관만 받는다
   const resume = Boolean(pendingEmail);
@@ -97,7 +97,13 @@ export function SignupAccountPage() {
 
   return (
     <AuthLayout step="account" title="Siempre 시작하기" sub="로그인에 쓸 이메일과 대화에서 보일 닉네임을 정해 주세요.">
-      {!firebaseReady && <Alert>Firebase 설정이 없어요. frontend/.env.local에 VITE_FIREBASE_* 값을 넣고 다시 실행해 주세요.</Alert>}
+      {!firebaseReady && (
+        <Alert>
+          {demoAvailable
+            ? <>시연 모드에서는 가입 없이 <Link to="/login" className="font-bold underline">로그인 화면</Link>의 "시연용 관리자로 로그인"을 써 주세요. (가입은 Firebase 설정이 필요해요)</>
+            : 'Firebase 설정이 없어요. frontend/.env.local에 VITE_FIREBASE_* 값을 넣고 다시 실행해 주세요.'}
+        </Alert>
+      )}
       {apiError && <Alert>{apiError}</Alert>}
 
       {resume ? (
@@ -117,7 +123,7 @@ export function SignupAccountPage() {
           </MiniButton>
         }
         message={exists ? (
-          // PRD 5-0: 이미 가입된 이메일은 막지 않고 로그인 화면으로 안내
+          // PRD 7-0: 이미 가입된 이메일은 막지 않고 로그인 화면으로 안내
           <span className="text-ink">
             이미 가입한 이메일이에요.{' '}
             <Link to={`/login?email=${encodeURIComponent(email.trim())}`} className="inline-flex min-h-tap items-center font-bold underline underline-offset-2">로그인하러 가기</Link>
