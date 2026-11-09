@@ -1,0 +1,154 @@
+Siempre 광고 전용 프롬프트
+
+기준 영상: Siempre_광고_24초_무음.mp4 (24.5초, 캐릭터 버전) · 작성일 2026-11-09 함께 보는 파일: Siempre_광고대본.md, Siempre_녹음대본.md
+
+이 문서에는 프롬프트가 두 개 있다.
+
+프롬프트	어디에 넣나	언제 쓰나
+A. 캐릭터 버전	HyperFrames (또는 HTML로 영상을 만드는 AI)	지금 영상을 다시 만들거나 고칠 때
+B. 실사 클립	영상 생성 AI (Kling, Veo, Runway, ElevenLabs 등)	나중에 실사 버전으로 바꿀 때
+
+HyperFrames는 HTML로 화면을 짜서 영상으로 뽑는 도구라 실사 인물을 만들지 못한다. 실사가 필요하면 B로 클립을 먼저 만들고 A의 장면 자리에 넣는다.
+
+A. 캐릭터 버전 (HyperFrames)
+Siempre 광고 영상을 HyperFrames 컴포지션으로 만들어 줘. 실사가 아니라
+플랫 일러스트 캐릭터 애니메이션이다. 사람과 배경은 전부 SVG로 그린다.
+
+[기본]
+- 1920x1080, 30fps, 총 24.5초. 한국어. 폰트는 Pretendard(없으면 Noto Sans KR).
+- 소리는 넣지 않는다. 녹음과 배경음은 나중에 따로 얹는다.
+- 화면 속 글자(모니터 UI, 말풍선, 칩, 자막)는 전부 HTML 텍스트로 만든다.
+- 참고 이미지는 화면에 넣지 않는다.
+
+[그림체]
+- 굵은 검은 외곽선(4px 안팎)의 플랫 일러스트. 웹툰·예능 느낌.
+- 인물: 둥근 머리, 점 눈, 단순한 입. 상반신 위주.
+- 사무실: 형광등, 베이지 칸막이, 바인더, 서류 더미. 따뜻한 베이지 톤.
+- 회의실: 연보라 벽, 화이트보드에 막대 차트.
+
+[인물]
+- 나(주인공): 20대 후반 남자, 흰 셔츠, 삐죽한 머리. 등과 몸에 연두색 포스트잇이 덕지덕지.
+- 동료 A: 30대 여자, 검은 뿔테 안경, 긴 머리, 베이지 카디건.
+- 동료 B: 30대 남자, 하늘색 줄무늬 셔츠.
+- 이 팀장: 40대 남자, 대머리에 옆머리만 회색, 안경, 남색 정장, 분홍 넥타이.
+
+[브랜드]
+- Siempre 키 컬러는 분홍(#EC5E9C). 배경 흰색, 강조 분홍.
+- AI 칩은 색 원 안에 이니셜 + 이름 글자. 실제 회사 로고는 쓰지 않는다.
+  Claude = C 주황, Qwen = Q 보라, Mistral = M 오렌지, Nano Banana = N 노랑.
+- 주인공이 처음 쓰는 챗봇은 이름 없는 회색 챗봇("AI 챗봇")으로, 특정 서비스처럼 보이지 않게.
+- Siempre 화면에는 음성 관련 버튼·문구를 넣지 않는다.
+
+[자막 규칙]
+- 대사 자막: 화면 아래 가운데, 반투명 검은 박스, 흰 글씨 40px.
+  앞에 말한 사람 이름을 분홍 작은 글씨로 붙인다(동료 A, 동료 B, 나, 이 팀장, 내레이션).
+- 예능 자막: 아주 굵은 흰 글씨 + 두꺼운 검은 테두리 + 분홍 그림자. 튀어나오며 커졌다 자리 잡는다.
+
+[장면]
+1) 0–4초 | 탕비실 험담
+   - 동료 A·B가 커피를 들고 몸을 붙여 숙덕인다. A는 손으로 입을 가리고, B는 2.3초에 눈이 커진다.
+   - 뒤쪽 문 너머에 포스트잇 붙은 주인공이 작게 보인다. 1초쯤 "←" 화살표가 그쪽을 가리킨다.
+   - 예능 자막 "숙덕", "숙덕", "숙덕숙덕"이 차례로 흔들리며 뜨고, 3초에 노란 "ㄷㄷㄷ"가 크게 튄다.
+   - 대사: 0–2.2초 동료 A "저 사람, 기획안 AI로 짰잖아. 말투가 너무 AI라서 우리가 싹 다 고쳤어."
+           2.2–4초 동료 B "아… 그래서 이 팀장이 그렇게 한숨 쉰 거야?"
+
+2) 4–8초 | 주인공 어깨 너머로 모니터
+   - 주인공 뒷모습(등에 포스트잇)이 왼쪽 아래 앞에 크게, 그 너머로 모니터가 정면에 보인다.
+   - 4초에 예능 자막 "…(정적)" 0.6초.
+   - 모니터 속 회색 챗봇: 사용자 말풍선 "팀에서 기획안 다 고쳤대… 왜 그럴까?"가 이미 있고,
+     4.8초부터 챗봇 답이 타이핑된다 "AI 하나로 다 하니까 그래요."
+   - 대사: 5.8–8초 나 "아니, 나는 이거 하나밖에 안 써 봤단 말이야…"
+
+3) 8–11초 | 몸을 숙이는 주인공, 화면으로 다가감
+   - 8초에 주인공이 움찔 물러났다가(0.3초) 모니터로 몸을 바짝 숙인다(8.5–9.3초).
+   - 8초에 예능 자막 "헉!".
+   - 8.3초부터 챗봇 두 번째 답 타이핑 "그럼 고민 말고, 알아서 맞춰 주는 AI를 써요."
+   - 10–11초: 카메라가 모니터로 점점 빠르게 다가간다(1.0 → 1.7배).
+   - 대사: 9.5–11초 나 "AI 쓰는 걸 AI한테 맡긴다고?"
+
+4) 11–13초 | 모니터 화면 클로즈업, Siempre
+   - 흰 번쩍임 0.25초와 함께 화면 가득 Siempre 대화창. 천천히 1.0 → 1.08배.
+   - 요청과 칩이 0.4초 간격으로 뜬다:
+     "기획안 초안 써줘" → Claude "· 기획안 자동 선택"
+     "해외 자료 번역해줘" → Qwen "· 번역 자동 선택"
+     "표지 이미지 만들어줘" → Nano Banana "· 표지 자동 선택"
+   - 큰 예능 자막: "알맞은 AI가 자동으로"("자동으로"는 연분홍)
+   - 대사: 내레이션 "고르는 건 Siempre가 할게요."
+
+5) 13–16.5초 | 회의실 칭찬
+   - 왼쪽에 이 팀장이 노트북 앞에 앉아 고개를 끄덕이며 웃는다. 가운데에 주인공, 오른쪽 뒤에 동료 A·B.
+   - 14.3초: 동료 A는 손으로 입을 가리고, 둘 다 눈이 커지고 입이 동그래진다. 노란 예능 자막 "헉!"이 1.3초 동안.
+   - 15.5초: 주인공이 손을 들고 쑥스럽게 웃는다.
+   - 대사: 13–15.5초 이 팀장 "오, 이번 거 좋은데? 구성도 깔끔하고 근거도 탄탄하네. 이대로 보고 올리자."
+           15.5–16.5초 나 "아, 하하… 감사합니다!"
+
+6) 16.5–18.5초 | 팀장이 웃는 동안 노트북으로 줌인
+   - 팀장 뒷모습이 왼쪽 앞에 크게, 웃음에 어깨가 흔들리고 한 손을 든다. 그 너머로 노트북 화면(Siempre)이 보인다.
+   - 카메라가 노트북 화면으로 천천히 다가가다 점점 빨라져, 18.5초에 화면이 꽉 찬다(1.0 → 2.7배).
+   - 노란 예능 자막 "하하하하!"가 위아래로 들썩이며 1.5초 동안.
+   - 18.2초부터 흰색으로 번지며 다음 장면으로.
+   - 대사: 이 팀장 "하하하하!"
+
+7) 18.5–21.5초 | 팀장 노트북 화면, AI 검토를 천천히
+   - 화면 가득 Siempre. 왼쪽 사이드바에 "2분기 신사업 기획안 검토" 선택됨, 위쪽에 "이 팀장".
+   - 3초 동안 일정하게 1.0 → 1.12배.
+   - 18.7초: 사용자 말풍선 "이 기획안 검토해줘 📎 기획안_v3.pdf"
+   - 19.4초: Claude 칩 "· 깊은 분석이라 자동 선택"
+   - 20.0–21.0초: 답변 타이핑 "구성이 탄탄해요. 이대로 보고해도 좋아요."("이대로 보고해도 좋아요."는 분홍 굵게)
+   - 21.0초: 노란 예능 자막 "띵!"
+
+8) 21.5–24.5초 | 사무실 전체 → 엔드카드
+   - 21.5–23초: 위에서 내려다본 사무실, 모든 모니터가 분홍. 1.35 → 1.0배로 멀어진다.
+     큰 예능 자막 "너 빼고 다 Siempre 쓰고 있다"("Siempre"는 연분홍)
+     대사: 내레이션 "너 빼고 다 쓰고 있는, Siempre."
+   - 23–24.5초: 분홍 그라데이션 엔드카드. 큰 흰 글씨 "Siempre",
+     "쓸 AI만 골라 담고, 고르는 건 Siempre가", AI 칩 4개, 반투명 칩 "음성 생성 · 곧 출시".
+
+[마무리]
+- 장면 전환은 컷. 3→4, 6→7만 다가가는 움직임과 흰 번쩍임으로 잇는다.
+- 다 만들면 미리보기를 렌더하고, 장면별 시작 시간이 위와 맞는지 확인해 줘.
+B. 실사 클립 (영상 생성 AI, 장면마다 하나씩)
+
+A의 1·2·3·5·6·8번 장면을 실사로 바꿀 때 쓴다. 4·7번은 화면 UI라 실사가 필요 없다.
+
+[공통 스타일] Korean office comedy drama, 2000s K-drama look, warm fluorescent
+lighting, beige cubicle partitions, cluttered desks with stacked binders and papers,
+slightly exaggerated comedic acting, 16:9, cinematic, realistic, no logos, no readable text.
+
+[인물]
+- Hero: Korean office worker in late 20s, white shirt, tired face, messy hair.
+- Colleague A: Korean woman, 30s, black-rimmed glasses, beige cardigan.
+- Colleague B: Korean man, 30s, light blue striped shirt.
+- Team lead Lee: Korean man, late 40s, navy suit, pink tie, reading glasses.
+
+clip_01_gossip (4s): Office pantry. Colleague A and B stand close holding paper
+coffee cups, whispering and glancing toward the office. Colleague A covers her mouth,
+Colleague B's eyes widen. Shot from behind their shoulders, faces turned away.
+
+clip_02_hero_ots (4s): Static camera, over-the-shoulder from behind the hero at his
+desk. His back is covered in yellow-green sticky notes. The monitor in front shows a
+plain bright white blank screen, fully visible and centered. His hands freeze above
+the keyboard and he slowly lifts his head. Camera does not move.
+
+clip_03_hero_lean (3s): Same static angle. The hero flinches back, then leans in
+close to the monitor. In the last second the camera pushes in toward the blank screen.
+
+clip_05_meeting (3.5s): Small meeting room. Team lead Lee sits at his laptop, nodding
+with an impressed smile and talking. The hero stands beside him, smiling shyly.
+Colleague A and B in the back gasp, hands near their mouths. Side angle.
+
+clip_06_lead_laugh_pushin (2s): Team lead Lee laughs heartily, shoulders shaking.
+The camera slowly pushes in over his shoulder until his laptop screen, plain bright
+white, fills the frame.
+
+clip_08_office_wide (1.5s): Wide high-angle shot of the whole open office, every
+monitor glowing soft pink. Camera slowly pulls back.
+지킬 것
+항목	규칙
+실제 로고	그리지 않는다. 이니셜 원 + 이름 글자로만
+경쟁 서비스 이름	"챗지피티" 등 실제 서비스 이름을 대사·화면에 쓰지 않는다
+과장 표현	"AI 티 안 나요" 같은 결과 보장 문구를 쓰지 않는다
+음성 기능	Siempre 화면에 넣지 않고, 엔드카드 "곧 출시"로만 보여 준다
+화면 글자	AI 영상에 굽지 않고 편집에서 HTML로 얹는다(한글이 뭉개진다)
+실사 인물	정면에서 말하는 얼굴을 피한다(녹음과 입 모양이 어긋난다)
+참고 사진	실제 드라마 장면은 시작 프레임으로 쓰지 않고 분위기 참고로만
