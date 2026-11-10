@@ -72,3 +72,22 @@ npm run build             # 타입 검사 + 배포용 빌드
 - 바뀔 수 있는 값·문구는 `src/config/auth.ts`, 검사 함수는 `src/lib/auth.ts`, Firebase 연결·오류 문구는 `src/lib/firebase.ts`, API 호출은 `src/api/auth.ts` (로그인 필요 요청에 Firebase ID 토큰을 붙임).
 - 색·글꼴 토큰은 `tailwind.config.js` (디자인 명세 2장 색, 글꼴 Pretendard).
 - 디자인 시안: Figma `siempre · 확정용 > 회원가입 시안` (https://www.figma.com/design/gBNj0gHsS4457DHLWG7N0O)
+## 방문 통계 (Google Analytics 4)
+
+측정 ID는 `G-1SK7P15M93`이고, **`public/analytics.js` 한 곳**에 있어요. 두 페이지(`index.html`, `siempre-figma-prototype.html`)의 `<head>`에서 같은 파일을 불러와요. ID를 바꾸려면 그 파일의 `ID` 값만 고치면 돼요.
+
+- **개발 중에는 보내지 않아요.** `localhost`·`127.0.0.1`에서는 아무것도 전송하지 않아서 개발·시연 연습이 통계에 섞이지 않아요. 지금 켜서 확인하고 싶으면 주소 끝에 `?ga_debug=1`을 붙이고 GA의 **DebugView**에서 봐요(이 방문은 일반 보고서에 합쳐지지 않아요).
+- **로그인·가입 앱**: 주소가 바뀔 때마다 GA4 "향상된 측정"이 `page_view`를 자동으로 보내요(데이터 스트림에서 켜져 있어야 해요).
+- **서비스 화면**은 주소가 그대로라서 직접 보내는 이벤트가 있어요.
+
+| 이벤트 | 언제 | 같이 보내는 값 |
+| --- | --- | --- |
+| `view_screen` | 상단 메뉴로 구독·대화·크레딧 화면이 바뀔 때 | `screen_name`: `subscribe` / `chat` / `credit` |
+| `cta_start_paid` | "이 구성으로 시작하기"를 누를 때 | 없음 |
+| `cta_start_free` | "결제 없이 무료로 시작하기"를 누를 때 | 없음 |
+| `payment_submit` | 결제하기 창에서 결제 버튼을 누를 때 (결제 창이 있는 버전에서) | 없음 |
+| `credit_charge` | AI별 "충전하기"를 누를 때 | `ai`: 어느 AI인지 |
+
+- 입력한 글, 이메일, 닉네임, 카드 정보 같은 **개인정보는 보내지 않아요.** 버튼 이름과 AI 이름만 보내요.
+- 올린 뒤 확인: GA → 보고서 → **실시간**에서 내 방문과 위 이벤트가 보이는지 봐요. 반영까지 몇 분 걸릴 수 있어요.
+- 실제 서비스로 열 때는 GA 사용 사실을 개인정보 처리방침에 적고, 필요하면 동의 배너를 붙여요(지금은 동의 배너가 없어요).
