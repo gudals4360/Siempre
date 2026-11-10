@@ -66,8 +66,8 @@ export function AuthLayout({ step, title, sub, back, children }: { step?: Signup
     <div className="min-h-screen bg-page text-ink">
       <header className="flex min-h-[67px] items-center justify-between gap-3 border-b border-lavender bg-surface px-4 py-3 md:px-10">
         <Link to="/" aria-label="Siempre 홈" className="flex min-h-tap items-center gap-2 text-ink">
-          <img src="/brand/siempre-symbol-96.png" alt="" width={39} height={36} className="h-9 w-auto" />
-          <img src="/brand/siempre-wordmark-240.png" alt="Siempre" width={91} height={28} className="h-7 w-auto" />
+          <img src={`${import.meta.env.BASE_URL}brand/siempre-symbol-96.png`} alt="" width={39} height={36} className="h-9 w-auto" />
+          <img src={`${import.meta.env.BASE_URL}brand/siempre-wordmark-240.png`} alt="Siempre" width={91} height={28} className="h-7 w-auto" />
         </Link>
       </header>
 

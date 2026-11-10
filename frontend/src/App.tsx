@@ -9,7 +9,7 @@ import { AuthProvider, SignupProvider } from './state/AuthState';
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
         <Routes>
           {/* MVP: 처음 온 사람도 구독 화면(권희수 님 페이지)부터 본다. 시작할 때 로그인은 bridge/prototypeAuth.ts가 받는다 */}
           <Route path="/" element={<GoToServicePage />} />

@@ -38,4 +38,5 @@ export const MARKETING_LABEL = '할인·새 AI 입점 소식 받기';
 export const HOME_PATH = '/';
 
 /** 로그인한 사람이 쓰는 서비스 화면: 권희수 님의 구독·대화·크레딧 페이지 (React 밖의 별도 HTML) */
-export const SERVICE_PAGE = '/siempre-figma-prototype.html';
+export const BASE = import.meta.env.BASE_URL; // 사이트 기본 주소: 루트면 '/', 하위 주소면 '/Siempre/' (빌드할 때 VITE_BASE)
+export const SERVICE_PAGE = `${BASE}siempre-figma-prototype.html`;

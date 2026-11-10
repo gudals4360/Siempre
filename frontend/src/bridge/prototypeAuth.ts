@@ -11,6 +11,7 @@
 
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { ApiError, authApi, type User } from '../api/auth';
+import { BASE } from '../config/auth';
 import { clearDemoToken, getDemoToken } from '../lib/demo';
 import { auth } from '../lib/firebase';
 
@@ -95,12 +96,12 @@ function showGuest() {
   login.type = 'button';
   login.textContent = '로그인';
   login.style.cssText = btnStyle;
-  login.addEventListener('click', () => window.location.assign(`/login?next=${encodeURIComponent(HERE)}`));
+  login.addEventListener('click', () => window.location.assign(`${BASE}login?next=${encodeURIComponent(HERE)}`));
   const signup = document.createElement('button');
   signup.type = 'button';
   signup.textContent = '회원가입';
   signup.style.cssText = primaryStyle;
-  signup.addEventListener('click', () => window.location.assign('/signup'));
+  signup.addEventListener('click', () => window.location.assign(`${BASE}signup`));
   wrap.append(login, signup);
   box.appendChild(wrap);
 }
@@ -146,7 +147,7 @@ window.addEventListener('click', (e) => {
   e.stopImmediatePropagation();
   if (!known) return; // 확인 중에는 잠깐 무시
   savePending(action);
-  window.location.assign(`/login?next=${encodeURIComponent(HERE)}`);
+  window.location.assign(`${BASE}login?next=${encodeURIComponent(HERE)}`);
 }, true);
 
 /** 지금 로그인 상태를 확인해 상단바·이어서 할 동작을 정한다 (Firebase 계정 또는 시연 모드 토큰) */
@@ -171,7 +172,7 @@ async function check() {
     member = null;
     known = true;
     if (auth?.currentUser && e instanceof ApiError && e.code === 'profile_missing') {
-      window.location.replace('/signup');
+      window.location.replace(`${BASE}signup`);
       return;
     }
     if (!auth?.currentUser && e instanceof ApiError && e.status === 401) clearDemoToken(); // 시연 토큰 만료·백엔드 재시작
