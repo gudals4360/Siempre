@@ -8,6 +8,7 @@
   "scripts": {
     "start": "node --disable-warning=ExperimentalWarning shared/server.js",
     "dev": "node --disable-warning=ExperimentalWarning --watch shared/server.js",
+    "start:demo": "node --disable-warning=ExperimentalWarning deploy/serve.js",
     "test": "node --disable-warning=ExperimentalWarning --test \"**/test/*.test.js\""
   }
 }
