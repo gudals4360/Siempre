@@ -51,12 +51,12 @@ export const PAGE_META: Record<string, { title: string; description: string; noi
   '/login': {
     title: 'Siempre 로그인 | AI 통합 구독',
     description:
-      'Siempre 로그인. 가입한 이메일과 비밀번호로 로그인하면 담아 둔 AI와 이번 주 남은 크레딧을 바로 확인하고 대화를 이어갈 수 있어요. 크레딧은 매주 결제일과 같은 요일에 채워져요. 아직 계정이 없다면 이메일과 닉네임만으로 1분 만에 회원가입하세요.',
+      'Siempre 로그인. 가입한 이메일과 비밀번호로 로그인하면 담아 둔 AI와 이번 주 남은 크레딧을 바로 확인하고 대화를 이어갈 수 있어요. 크레딧은 매주 새로 채워져요. 아직 계정이 없다면 이메일과 닉네임만으로 1분 만에 회원가입하세요.',
   },
   '/signup': {
     title: 'Siempre 회원가입 | 쓸 AI만 골라 담는 구독',
     description:
-      'Siempre 회원가입. 이메일과 닉네임만 정하면 1분 만에 가입이 끝나요. 가입하면 Claude·Qwen·Mistral·ElevenLabs·Nano Banana 중 쓸 AI만 골라 담고, 한 대화창에서 대본·번역·음성·이미지 작업을 크레딧 하나로 이어갈 수 있어요. 무료 사용량으로 먼저 써 보세요.',
+      'Siempre 회원가입. 이메일과 닉네임만 정하면 1분 만에 가입이 끝나요. 가입하면 Claude·Qwen·Mistral·ElevenLabs·Nano Banana 중 쓸 AI만 골라 담고, 한 대화창에서 대본·번역·음성·이미지 작업을 이어갈 수 있어요. 무료 사용량으로 먼저 써 보세요.',
   },
   '/signup/terms': {
     title: 'Siempre 약관 동의',
@@ -67,7 +67,7 @@ export const PAGE_META: Record<string, { title: string; description: string; noi
   '/signup/done': {
     title: 'Siempre 가입 완료',
     description:
-      'Siempre 가입이 끝났어요. 이제 Claude·Qwen·Mistral·ElevenLabs·Nano Banana 중 쓸 AI를 골라 나만의 구독을 만들고, 한 대화창에서 크레딧 하나로 써 보세요.',
+      'Siempre 가입이 끝났어요. 이제 Claude·Qwen·Mistral·ElevenLabs·Nano Banana 중 쓸 AI를 골라 나만의 구독을 만들고, 한 대화창에서 써 보세요.',
     noindex: true,
   },
 };
