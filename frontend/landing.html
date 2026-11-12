@@ -203,10 +203,10 @@ section.sec{max-width:1180px;margin:0 auto;padding:110px var(--gut)}
 
 /* AI 카드 */
 /* 이야기 구간이 도착 섹션 위에 그려져야 휴대폰이 내려올 때 가려지지 않는다 */
-.story{z-index:3}
+.story{z-index:3;overflow-x:clip}
 .carrier{position:relative;display:grid;place-items:center;transform-style:preserve-3d;will-change:transform}
 .orbs{position:absolute;inset:0;pointer-events:none}
-.dock{position:relative;z-index:1;min-height:100vh;min-height:100svh;max-width:1180px;margin:0 auto;padding:84px var(--gut) 40px}
+.dock{overflow-x:clip;position:relative;z-index:1;min-height:100vh;min-height:100svh;max-width:1180px;margin:0 auto;padding:84px var(--gut) 40px}
 .dock-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px minmax(0,1fr);gap:40px;align-items:start}
 .dock-col{display:flex;flex-direction:column;gap:14px;min-width:0}
 .dock-col:last-child{padding-top:40px}
@@ -671,7 +671,8 @@ footer{background:var(--ink);color:#8f8898;font-size:13px;text-align:center;padd
   intro.from('.panel[data-step="0"] .eyebrow',{y:20,autoAlpha:0,duration:.6})
        .from('.panel[data-step="0"] h1 .word>span',{yPercent:110,duration:.8,stagger:.06,ease:'power4.out'},'-=.3')
        .from('.panel[data-step="0"] p, .panel[data-step="0"] .ctas',{y:24,autoAlpha:0,duration:.6,stagger:.12},'-=.4')
-       .from(phone,{y:120,rotationX:25,rotationY:-30,autoAlpha:0,duration:1.2,ease:'power3.out'},0.2)
+       // 휴대폰(#phone)은 스크롤 애니메이션이 맡으므로, 등장은 바깥 무대(#stage)로 한다
+       .from('#stage',{y:120,autoAlpha:0,duration:1.2,ease:'power3.out'},0.2)
        .from('.orb',{scale:0,autoAlpha:0,duration:.6,stagger:.08,ease:'back.out(2)'},'-=.6');
 
   // 떠다니는 칩 (계속)
@@ -693,6 +694,8 @@ footer{background:var(--ink);color:#8f8898;font-size:13px;text-align:center;padd
     }
   }});
   tl.addLabel('s0',0);
+  // 기준 자세를 0초에 박아 둔다. 맨 위로 되감을 때 이 값으로 돌아온다
+  tl.fromTo(phone,{rotationY:-18,rotationX:6,scale:1,y:0},{rotationY:-18,rotationX:6,scale:1,y:0,duration:.01,immediateRender:false},0);
   for(var i=1;i<N;i++){
     var at=LEAD+(i-1)*STEP;
     tl.addLabel('s'+i, at+1.25);
@@ -700,20 +703,34 @@ footer{background:var(--ink);color:#8f8898;font-size:13px;text-align:center;padd
     tl.to(panels[i-1],{autoAlpha:0,y:-60,duration:.35},at+.1)
       .fromTo(panels[i],{autoAlpha:0,y:60},{autoAlpha:1,y:0,duration:.35},at+.55)
     // 휴대폰: 한 바퀴 + 살짝 작아졌다 커짐 + 뒷면이 보일 때 화면 교체
-      .to(phone,{rotationY:'+=360',duration:.8,ease:'power3.inOut'},at+.1)
-      .to(phone,{scale:.86,y:-10,duration:.4,ease:'power1.out'},at+.1)
-      .to(phone,{scale:1,y:0,duration:.4,ease:'power1.in'},at+.5)
+    // 시작값을 숫자로 못 박는다(fromTo). '+=360'처럼 그때그때 값을 읽으면, 첫 등장 애니메이션 도중의
+    // 위치·각도가 기록되어 맨 위로 돌아왔을 때 휴대폰이 내려가 있거나 비뚤어진다
+      .fromTo(phone,{rotationY:-18+360*(i-1)},{rotationY:-18+360*i,duration:.8,ease:'power3.inOut',immediateRender:false},at+.1)
+      .fromTo(phone,{scale:1,y:0},{scale:.86,y:-10,duration:.4,ease:'power1.out',immediateRender:false},at+.1)
+      .fromTo(phone,{scale:.86,y:-10},{scale:1,y:0,duration:.4,ease:'power1.in',immediateRender:false},at+.5)
       .call(showScreen,[i],at+.5)
       .call(showScreen,[i-1],at+.49)
-      .to('.orb',{x:function(k){return (k%2?-1:1)*(20+i*6)},y:function(k){return (k%3-1)*24},duration:.8},at+.1)
+      // AI 아이콘은 둥실 움직임(x·y)과 겹치지 않게 xPercent·yPercent로 옮긴다
+      .to('.orb',{xPercent:function(k){return (k%2?-1:1)*(40+i*12)},yPercent:function(k){return (k%3-1)*46},duration:.8},at+.1)
       .to('.b1',{x:i*60,y:i*40,duration:1},at)
       .to('.b2',{x:-i*50,y:-i*30,duration:1},at);
   }
   tl.to({}, {duration:.7});
+  // 마지막 멈춤 지점: 이게 없으면 04단계에서 조금만 내려도 다음 지점이 없어 04단계로 되돌아가 아래로 못 넘어간다
+  tl.addLabel('end', tl.duration());
 
   // 마지막: 휴대폰이 아래로 쭉 내려가 다음 섹션 가운데 자리(.slot)에 앉는다.
   // 도착 섹션이 화면 아래에서 위까지 올라오는 동안(=화면 높이 1개) 휴대폰을 그만큼 + 자리 차이만큼 옮긴다
   var carrier=$('#carrier'), slot=$('#slot'), story=$('#story'), dock=$('#ais');
+  // 노트북처럼 화면이 낮으면 휴대폰(높이 614px)이 잘리지 않게 줄이고, 도착 자리도 같은 크기로 맞춘다
+  function fitPhone(){
+    if(innerWidth<=860){ gsap.set(carrier,{scale:1}); slot.style.width=''; slot.style.height=''; return }
+    var k=Math.max(.62, Math.min(1, (innerHeight-150)/614));
+    gsap.set(carrier,{scale:k});
+    slot.style.width=Math.round(300*k)+'px'; slot.style.height=Math.round(614*k)+'px';
+  }
+  fitPhone();
+  ScrollTrigger.addEventListener('refreshInit', fitPhone);
   function dockDelta(axis){
     var c=carrier.getBoundingClientRect(), s=slot.getBoundingClientRect(), st=story.getBoundingClientRect(), dk=dock.getBoundingClientRect();
     var curX=gsap.getProperty(carrier,'x')||0, curY=gsap.getProperty(carrier,'y')||0;
